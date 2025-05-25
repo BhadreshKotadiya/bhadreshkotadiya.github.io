@@ -424,7 +424,7 @@
       }
 
       .experience-item.left {
-          left: 0;
+          left: 4px;
       }
 
       .experience-item.right {
@@ -432,7 +432,7 @@
       }
 
       .experience-item.right::after {
-          left: -9px;
+          left: -12px !important;
       }
 
       .experience-content {
@@ -719,8 +719,8 @@
             left: 20px;
             margin-left: 0;
         }
-        .experience-item::after {
-            left: 0;
+        .experience-item::after,.experience-item.right::after {
+            left: 10px !important;
             right: auto;
         }
     }
