@@ -660,94 +660,103 @@
       }
 
       /* Responsive Design */
-      @media (max-width: 992px) {
-          .contact-content {
-              flex-direction: column;
-              gap: 2.5rem;
-          }
+@media (max-width: 992px) {
+        .nav-links {
+            position: fixed;
+            top: 65px;
+            right: -100%;
+            width: 220px;
+            height: calc(100vh - 65px);
+            background: var(--secondary-color);
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 30px 20px;
+            transition: right 0.3s;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+        .nav-links.active {
+            right: 0;
+        }
+        .nav-links li {
+            margin: 18px 0;
+            margin-left: 0;
+        }
+        .menu-toggle {
+            display: block;
+        }
+    }
 
-          .contact-info {
-              text-align: center;
-          }
+    @media (max-width: 992px) {
+        .about-content,
+        .contact-content {
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .about-image,
+        .about-text,
+        .contact-info,
+        .contact-form {
+            flex-basis: 100%;
+            width: 100%;
+            max-width: 100%;
+        }
+        .about-image {
+            margin-bottom: 1.5rem;
+        }
+        .skills-grid {
+            grid-template-columns: 1fr;
+        }
+        .experience-timeline {
+            max-width: 100%;
+        }
+        .experience-item {
+            width: 100%;
+            left: 0 !important;
+            margin-bottom: 2rem;
+        }
+        .experience-timeline::after {
+            left: 20px;
+            margin-left: 0;
+        }
+        .experience-item::after {
+            left: 0;
+            right: auto;
+        }
+    }
 
-          .info-item {
-              justify-content: center;
-          }
+    @media (max-width: 768px) {
+        h1 { font-size: 2.2rem; }
+        h2 { font-size: 1.5rem; }
+        .hero-content h1 { font-size: 2.2rem; }
+        .hero-content .subtitle { font-size: 1.1rem; }
+        .portfolio-grid {
+            grid-template-columns: 1fr;
+        }
+        .portfolio-item img {
+            height: 150px;
+        }
+        section {
+            padding: 40px 0;
+        }
+        .container {
+            width: 98%;
+            padding: 0 5px;
+        }
+    }
 
-          .social-links {
-              justify-content: center;
-          }
-
-          .contact-form .btn {
-              align-self: center;
-          }
-      }
-
-      @media (max-width: 768px) {
-          #contact {
-              padding: 40px 0;
-          }
-
-          .contact-info h3 {
-              font-size: 1.5rem;
-          }
-
-          .contact-info p {
-              font-size: 0.9rem;
-          }
-
-          .info-item {
-              font-size: 0.9rem;
-          }
-
-          .info-item i {
-              font-size: 1.4rem;
-              width: 25px;
-          }
-
-          .social-links a {
-              font-size: 1.6rem;
-          }
-
-          .contact-form input,
-          .contact-form textarea {
-              font-size: 0.9rem;
-              padding: 10px 12px;
-          }
-
-          .contact-form .btn {
-              padding: 10px 25px;
-              font-size: 0.9rem;
-          }
-      }
-
-      @media (max-width: 480px) {
-          .contact-info h3 {
-              font-size: 1.3rem;
-          }
-
-          .contact-info p {
-              font-size: 0.85rem;
-          }
-
-          .info-item {
-              font-size: 0.85rem;
-          }
-
-          .social-links a {
-              font-size: 1.4rem;
-          }
-
-          .contact-form input,
-          .contact-form textarea {
-              font-size: 0.85rem;
-          }
-
-          .contact-form .btn {
-              width: 100%;
-              padding: 12px;
-          }
-      }
+    @media (max-width: 480px) {
+        .logo { font-size: 1.2rem; }
+        .btn, .btn-secondary { padding: 10px 16px; font-size: 0.95rem; }
+        .hero-content .hero-buttons .btn { margin: 5px 0; }
+        .about-image img { border-radius: 6px; }
+        .portfolio-item img { height: 100px; }
+        .portfolio-info { padding: 12px; }
+        .experience-content { padding: 12px 10px; }
+        .contact-form input, .contact-form textarea { font-size: 0.9rem; }
+        .contact-form .btn { width: 100%; }
+        .scroll-down { font-size: 0.9rem; }
+    }
     </style>
     <!-- SEO Meta Tags -->
     <meta
@@ -885,7 +894,7 @@
               <li><strong>Phone:</strong> (+91) 72028 20789</li>
               <li><strong>Location:</strong> Ahmedabad, India</li>
             </ul>
-            <a href="Bhadresh-CV.pdf" class="btn" download>Download My CV</a>
+            <a href="assets/Bhadresh -CV.pdf" class="btn" download>Download My CV</a>
           </div>
         </div>
       </div>
@@ -985,9 +994,9 @@
           <div class="experience-item left">
             <div class="experience-content">
               <h3>Jr Laravel Developer</h3>
-              <span class="date"
-                >May 2023 - Present<br />Dolphin Web Solutions, Ahmedabad</span
-              >
+              <span class="date">
+                May 2023 - Present<br />Dolphin Web Solutions, Ahmedabad
+              </span>
               <p>
                 Working on Laravel projects, e-commerce sites, and API
                 integrations with Stripe & Razorpay.
@@ -997,9 +1006,9 @@
           <div class="experience-item right">
             <div class="experience-content">
               <h3>Trainee Laravel Developer</h3>
-              <span class="date"
-                >Jan 2023 - May 2023<br />WebCodeGenie, Ahmedabad</span
-              >
+              <span class="date">
+                Jan 2023 - May 2023<br />WebCodeGenie, Ahmedabad
+              </span>
               <p>
                 Learned Laravel basics, helped with projects, and gained
                 hands-on team experience.
