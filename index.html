@@ -1,1527 +1,892 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bhadresh Kotadiya - Laravel Developer</title>
-  <!-- Font Awesome CDN for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Google Fonts (Poppins, similar to the example) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    /* Reset and Base Styles */
-    :root {
-      --primary-color: #14b8a6;
-      /* Teal/Cyan accent */
-      --secondary-color: #27272a;
-      /* Darker background */
-      --bg-color: #18181b;
-      /* Main background */
-      --text-color: #e4e4e7;
-      /* Light text */
-      --text-muted: #a1a1aa;
-      /* Muted text */
-      --border-color: #3f3f46;
-      --card-bg: #27272a;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.7;
-      font-size: 16px;
-      overflow-x: hidden;
-      /* Prevent horizontal scroll from animations */
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: var(--text-color);
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-
-    h1 {
-      font-size: 3rem;
-    }
-
-    h2 {
-      font-size: 2.2rem;
-      text-align: center;
-      margin-bottom: 3rem;
-      position: relative;
-    }
-
-    section h2::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%) scaleX(0);
-      width: 80px;
-      height: 4px;
-      background-color: var(--primary-color);
-      border-radius: 2px;
-      transition: transform 0.6s ease-out;
-      transition-delay: 0.3s;
-    }
-
-    section h2.revealed::after {
-      transform: translateX(-50%) scaleX(1);
-    }
-
-
-    h3 {
-      font-size: 1.5rem;
-    }
-
-    p {
-      margin-bottom: 1rem;
-      color: var(--text-muted);
-    }
-
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 15px;
-    }
-
-    section {
-      padding: 80px 0;
-      overflow: hidden;
-    }
-
-    .btn {
-      display: inline-block;
-      background-color: var(--primary-color);
-      color: #fff;
-      padding: 12px 25px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .btn:hover {
-      background-color: transparent;
-      color: var(--primary-color);
-      border: 2px solid var(--primary-color);
-      transform: translateY(-3px);
-      text-decoration: none;
-    }
-
-    .btn-secondary {
-      background-color: transparent;
-      color: var(--primary-color);
-      border: 2px solid var(--primary-color);
-    }
-
-    .btn-secondary:hover {
-      background-color: var(--primary-color);
-      color: #fff;
-    }
-
-    /* Header / Navigation */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(24, 24, 27, 0.85);
-      backdrop-filter: blur(10px);
-      padding: 15px 0;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary-color);
-      transition: transform 0.3s ease;
-    }
-
-    .logo:hover {
-      transform: scale(1.1);
-    }
-
-    .logo span {
-      color: var(--text-color);
-      transition: color 0.3s ease;
-    }
-
-    .logo:hover span {
-      color: var(--primary-color);
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-    }
-
-    .nav-links li {
-      margin-left: 25px;
-    }
-
-    .nav-links a {
-      color: var(--text-muted);
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .menu-toggle {
-      display: none;
-      font-size: 1.5rem;
-      color: var(--text-color);
-      cursor: pointer;
-    }
-
-    /* Hero Section */
-    #hero {
-      height: 100vh;
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: linear-gradient(-45deg, var(--bg-color), var(--secondary-color), var(--primary-color), var(--secondary-color));
-      background-size: 400% 400%;
-      animation: gradientBG 20s ease infinite;
-      position: relative;
-      overflow: hidden; /* Crucial */
-      padding-left: 15px; /* Horizontal padding for content within hero */
-      padding-right: 15px;
-      padding-top: 70px;  /* Initial space for fixed header */
-      padding-bottom: 20px; /* Initial bottom padding */
-      box-sizing: border-box;
-    }
-
-
-    @keyframes gradientBG {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    .hero-content {
-      max-width: 700px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-content.loaded-and-floating {
-      animation: subtleFloat 6s ease-in-out infinite;
-    }
-
-    .hero-content>* {
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    .hero-content h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
-      animation-delay: 0.2s;
-    }
-
-    .hero-content h1 span {
-      color: var(--primary-color);
-    }
-
-    .hero-content .subtitle {
-      font-size: 1.5rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-      animation-delay: 0.5s;
-    }
-
-    .hero-content .hero-buttons {
-      animation-delay: 0.8s;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes subtleFloat {
-
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-
-    .hero-content .social-links {
-      margin-top: 2rem;
-    }
-
-    .hero-content .social-links a {
-      color: var(--text-color);
-      font-size: 1.5rem;
-      margin: 0 10px;
-      transition: color 0.3s ease;
-    }
-
-    .hero-content .social-links a:hover {
-      color: var(--primary-color);
-    }
-
-    .hero-buttons .btn {
-      margin: 0 10px;
-    }
-
-    .scroll-down {
-      position: absolute;
-      bottom: 30px; /* Default bottom position */
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--text-muted);
-      font-size: 1rem;
-      opacity: 0;
-      animation: fadeInUp 0.8s ease 1.5s forwards;
-      z-index: 2;
-    }
-
-    .scroll-down i {
-      display: block;
-      font-size: 1.5rem;
-      margin-top: 5px;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-
-      0%,
-      20%,
-      50%,
-      80%,
-      100% {
-        transform: translateY(0);
-      }
-
-      40% {
-        transform: translateY(-10px);
-      }
-
-      60% {
-        transform: translateY(-5px);
-      }
-    }
-
-    /* About Section */
-    #about {
-      background-color: var(--secondary-color);
-    }
-
-    .about-content {
-      display: flex;
-      align-items: flex-start;
-      gap: 3rem;
-    }
-
-    .about-image {
-      flex-basis: 35%;
-      text-align: center;
-    }
-
-    .about-image img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .about-text {
-      flex-basis: 65%;
-    }
-
-    .about-text h3 {
-      color: var(--primary-color);
-      margin-bottom: 0.5rem;
-    }
-
-    .about-text ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 1rem;
-    }
-
-    .about-text ul li {
-      margin-bottom: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .about-text ul li strong {
-      color: var(--text-color);
-      min-width: 100px;
-      display: inline-block;
-    }
-
-    /* Skills Section */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-
-    .skill-category {
-      background-color: var(--card-bg);
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .skill-category h3 {
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.5rem;
-    }
-
-    .skill-item {
-      margin-bottom: 15px;
-    }
-
-    .skill-item p {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 5px;
-      font-weight: 500;
-      color: var(--text-color);
-    }
-
-    .skill-bar {
-      background-color: var(--border-color);
-      height: 10px;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    .skill-level {
-      height: 100%;
-      background-color: var(--primary-color);
-      border-radius: 5px;
-      width: 0;
-      transition: width 1s ease-in-out 0.5s;
-    }
-
-    /* Experience Section */
-    #experience {
-      background-color: var(--secondary-color);
-    }
-
-    .experience-timeline {
-      position: relative;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .experience-timeline::after {
-      content: '';
-      position: absolute;
-      width: 4px;
-      background-color: var(--primary-color);
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      margin-left: -2px;
-      border-radius: 2px;
-    }
-
-    .experience-item {
-      padding: 10px 40px;
-      position: relative;
-      background-color: inherit;
-      width: 50%;
-    }
-
-    .experience-item::after {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      right: -9px;
-      background-color: var(--bg-color);
-      border: 4px solid var(--primary-color);
-      top: 20px;
-      border-radius: 50%;
-      z-index: 1;
-    }
-
-    .experience-item.left {
-      left: 4px;
-    }
-
-    .experience-item.right {
-      left: 50%;
-    }
-
-    .experience-item.right::after {
-      left: -12px !important;
-    }
-
-    .experience-content {
-      padding: 20px 30px;
-      background-color: var(--card-bg);
-      position: relative;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .experience-content h3 {
-      color: var(--primary-color);
-      font-size: 1.3rem;
-      margin-top: 0;
-    }
-
-    .experience-content .date {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-
-    .experience-content ul {
-      list-style-type: disc;
-      padding-left: 20px;
-      color: var(--text-muted);
-    }
-
-    .experience-content ul li {
-      margin-bottom: 0.5rem;
-    }
-
-    /* Portfolio Section */
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .portfolio-item {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .portfolio-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    }
-
-    .portfolio-item img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .portfolio-info {
-      padding: 20px;
-    }
-
-    .portfolio-info h3 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .portfolio-info p {
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-
-    .portfolio-info .tech-stack {
-      margin-bottom: 1rem;
-    }
-
-    .portfolio-info .tech-stack span {
-      display: inline-block;
-      background-color: var(--border-color);
-      color: var(--text-muted);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      margin-right: 5px;
-      margin-bottom: 5px;
-    }
-
-    .portfolio-links a {
-      margin-right: 10px;
-      font-size: 0.9rem;
-    }
-
-    .portfolio-links a i {
-      margin-right: 5px;
-    }
-
-    /* Contact Section */
-    #contact {
-      background-color: var(--secondary-color);
-      padding: 60px 0;
-    }
-
-    .contact-content {
-      display: flex;
-      gap: 2rem;
-      align-items: flex-start;
-    }
-
-    .contact-info {
-      flex: 1;
-      text-align: left;
-    }
-
-    .contact-info h3 {
-      color: var(--primary-color);
-      margin-bottom: 1.2rem;
-      font-size: 1.8rem;
-    }
-
-    .contact-info p {
-      margin-bottom: 1.5rem;
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--text-muted);
-    }
-
-    .info-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.2rem;
-      font-size: 1rem;
-    }
-
-    .info-item i {
-      font-size: 1.6rem;
-      color: var(--primary-color);
-      margin-right: 12px;
-      width: 30px;
-      text-align: center;
-    }
-
-    .info-item a {
-      color: var(--text-color);
-      transition: color 0.3s ease;
-    }
-
-    .info-item a:hover {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 15px;
-      margin-top: 1.5rem;
-    }
-
-    .social-links a {
-      font-size: 1.8rem;
-      color: var(--text-color);
-      transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .social-links a:hover {
-      color: var(--primary-color);
-      transform: translateY(-3px);
-    }
-
-    .contact-form {
-      flex: 1;
-    }
-
-    .contact-form form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .contact-form input,
-    .contact-form textarea {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid var(--border-color);
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      border-radius: 6px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .contact-form input:focus,
-    .contact-form textarea:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 8px rgba(20, 184, 166, 0.3);
-    }
-
-    .contact-form textarea {
-      resize: vertical;
-      min-height: 120px;
-      max-height: 300px;
-    }
-
-    .contact-form .btn {
-      align-self: flex-start;
-      padding: 12px 30px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    /* Scroll Animation Styles */
-    .scroll-animate {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.7s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transition-delay: var(--anim-delay, 0s);
-    }
-
-    .scroll-animate.revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
-      .nav-links {
-        position: fixed;
-        top: 65px;
-        right: -100%;
-        width: 220px;
-        height: calc(100vh - 65px);
-        background: var(--secondary-color);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 30px 20px;
-        transition: right 0.3s ease-in-out;
-        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
-        z-index: 999;
-      }
-
-      .nav-links.active {
-        right: 0;
-      }
-
-      .nav-links li {
-        margin: 18px 0;
-        margin-left: 0;
-      }
-
-      .menu-toggle {
-        display: block;
-      }
-
-      .about-content,
-      .contact-content {
-        flex-direction: column;
-        gap: 2rem;
-      }
-
-      .about-image,
-      .about-text,
-      .contact-info,
-      .contact-form {
-        flex-basis: 100%;
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .about-image {
-        margin-bottom: 1.5rem;
-      }
-
-      .skills-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .experience-timeline {
-        max-width: 100%;
-      }
-
-      .experience-item {
-        width: 100%;
-        padding-left: 40px;
-        padding-right: 10px;
-        left: 0 !important;
-        margin-bottom: 2rem;
-      }
-
-      .experience-timeline::after {
-        left: 20px;
-        margin-left: 0;
-      }
-
-      .experience-item::after,
-      .experience-item.right::after {
-        left: 10px !important;
-        right: auto;
-      }
-      #hero { /* Adjust hero padding for header on tablet */
-        padding-top: 65px;
-      }
-    }
-
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2.5rem;
-      }
-      h2 {
-        font-size: 1.8rem;
-      }
-      .portfolio-grid {
-        grid-template-columns: 1fr;
-      }
-      .portfolio-item img {
-        height: 180px;
-      }
-      section {
-        padding: 60px 0;
-      }
-      .container {
-        width: 95%;
-        padding: 0 10px;
-      }
-
-      /* Hero specific for 768px */
-      #hero {
-        padding-top: 70px; /* Consistent header spacing */
-        padding-bottom: 30px; /* More space at the bottom of hero content area */
-        min-height: 550px;
-      }
-      .hero-content h1 {
-        font-size: 2.8rem; 
-      }
-      .hero-content .subtitle {
-        font-size: 1.3rem;
-      }
-      .scroll-down {
-        bottom: 40px; /* Increased from 30px */
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .logo {
-        font-size: 1.5rem;
-      }
-      .btn,
-      .btn-secondary {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-      }
-      .about-image img {
-        border-radius: 8px;
-      }
-      .portfolio-item img {
-        height: 150px;
-      }
-      .portfolio-info {
-        padding: 15px;
-      }
-      .experience-content {
-        padding: 15px;
-      }
-      .contact-form input,
-      .contact-form textarea {
-        font-size: 0.95rem;
-      }
-      .contact-form .btn {
-        width: 100%;
-      }
-
-      /* Hero specific for 480px */
-      #hero {
-        padding-top: 65px; /* Space for potentially smaller header */
-        padding-bottom: 20px; /* Content padding, scroll-down will be positioned relative to hero edge */
-        min-height: max(480px, 100vh); /* Ensure it's tall enough but respects viewport */
-      }
-      .hero-content h1 {
-        font-size: 2.2rem; 
-      }
-      .hero-content .subtitle {
-        font-size: 1.1rem; 
-        margin-bottom: 1.5rem; 
-        line-height: 1.6; /* Better for wrapped text */
-      }
-      .hero-buttons .btn {
-        margin: 8px 5px; /* Allow side-by-side if space allows */
-        padding: 10px 18px;
-        font-size: 0.9rem;
-      }
-      .scroll-down {
-        bottom: 50px; /* Significantly more space from screen bottom */
-        font-size: 0.85rem;
-      }
-    }
-
-    @media (max-width: 375px) { /* Targeting iPhone SE, Galaxy Fold (narrow state) and similar */
-       #hero {
-        padding-top: 60px; /* Adjust header spacing if needed */
-      }
-      .hero-content h1 {
-        font-size: 2rem; /* More compact */
-      }
-      .hero-content .subtitle {
-        font-size: 1rem; /* More compact */
-        line-height: 1.5;
-      }
-      .hero-buttons {
-        display: flex;
-        flex-direction: column; /* Stack buttons */
-        align-items: center;    /* Center stacked buttons */
-        width: 100%;
-      }
-      .hero-buttons .btn {
-        margin: 8px 0;        /* Vertical margin for stacked buttons */
-        width: 75%;           /* Make buttons take up more width when stacked */
-        max-width: 240px;     /* But not too wide */
-        padding: 12px 15px;   /* Adjust padding for better tap targets */
-      }
-      .scroll-down {
-        bottom: 60px; /* Even more space from the bottom edge on very narrow screens */
-      }
-    }
-
-
-    /* Footer */
-    footer {
-      background-color: var(--secondary-color);
-      color: var(--text-muted);
-      text-align: center;
-      padding: 20px 0;
-      border-top: 1px solid var(--border-color);
-    }
-
-    footer p {
-      margin-bottom: 0;
-      font-size: 0.9rem;
-    }
-  </style>
-  <!-- SEO Meta Tags (Existing - Good) -->
-  <meta name="description" content="Bhadresh Kotadiya is a Laravel Developer based in Ahmedabad, India. Hire a skilled Laravel, PHP, and Full-Stack Developer for your web projects. 2+ years experience. Available for Laravel jobs and freelance work." />
-  <meta name="keywords" content="Bhadresh Kotadiya, Laravel Developer, Hire Laravel Developer, Laravel Jobs, PHP Developer, Ahmedabad, India, Full-Stack Developer, Web Developer, Laravel Portfolio, Laravel Freelancer, Laravel Expert, Laravel Ahmedabad, Laravel Remote, Laravel API, Laravel E-commerce" />
-  <meta name="author" content="Bhadresh Kotadiya" />
-  <meta property="og:title" content="Bhadresh Kotadiya - Laravel Developer Portfolio" />
-  <meta property="og:description" content="Hire Bhadresh Kotadiya, an experienced Laravel Developer in Ahmedabad, India. Laravel jobs, freelance, and web development services." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bhadreshkotadiya.github.io/" />
-  <meta property="og:image" content="https://media.licdn.com/dms/image/v2/D5603AQGiH2s4RzOqxA/profile-displayphoto-shrink_200_200/B56ZPuOJWIG4AY-/0/1734868507099?e=1753920000&v=beta&t=j0i6qnwPfteejZi5Et811ubHA4_BVdcbhd7YEnXWPSM" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bhadresh Kotadiya - Laravel Developer Portfolio" />
-  <meta name="twitter:description" content="Hire Bhadresh Kotadiya, Laravel Developer in Ahmedabad, India. Laravel jobs, freelance, and web development services." />
-  <meta name="twitter:image" content="https://media.licdn.com/dms/image/v2/D5603AQGiH2s4RzOqxA/profile-displayphoto-shrink_200_200/B56ZPuOJWIG4AY-/0/1734868507099?e=1753920000&v=beta&t=j0i6qnwPfteejZi5Et811ubHA4_BVdcbhd7YEnXWPSM" />
-  <link rel="canonical" href="https://bhadreshkotadiya.github.io/" />
-</head>
-
-<body>
-  <!-- Header -->
-  <header>
-    <div class="container navbar">
-      <a href="#hero" class="logo">B<span>K</span></a>
-      <div class="menu-toggle" id="mobile-menu">
-        <i class="fas fa-bars"></i>
-      </div>
-      <ul class="nav-links" id="nav-menu">
-        <li><a href="#hero" class="active">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section id="hero">
-    <div class="container hero-content">
-      <h1>Hello, I'm <span>Bhadresh Kotadiya</span></h1>
-      <p class="subtitle">
-        A passionate Laravel Developer with 2+ years of experience, building
-        robust and scalable web applications.
-      </p>
-      <div class="hero-buttons">
-        <a href="#contact" class="btn">Hire Me</a>
-        <a href="assets/Bhadresh -CV.pdf" target="_blank" class="btn btn-secondary" download>Download CV</a>
-      </div>
-    </div>
-    <a href="#about" class="scroll-down" aria-label="Scroll to About section">
-      Scroll Down
-      <i class="fas fa-chevron-down"></i>
-    </a>
-  </section>
-
-  <!-- About Section -->
-  <section id="about">
-    <div class="container">
-      <h2 class="scroll-animate">About Me</h2>
-      <div class="about-content">
-        <div class="about-image scroll-animate" data-anim-delay="0.2s">
-          <img src="https://media.licdn.com/dms/image/v2/D5603AQGiH2s4RzOqxA/profile-displayphoto-shrink_200_200/B56ZPuOJWIG4AY-/0/1734868507099?e=1753920000&v=beta&t=j0i6qnwPfteejZi5Et811ubHA4_BVdcbhd7YEnXWPSM" alt="Bhadresh Kotadiya" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bhadresh Kotadiya - Laravel Developer</title>
+    <!-- Font Awesome CDN for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts (Poppins, similar to the example) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Your CSS styles -->
+     <link rel="stylesheet" href="styles.css" />
+    <!-- SEO Meta Tags (Existing - Good) -->
+    <meta
+      name="description"
+      content="Bhadresh Kotadiya is a Laravel Developer based in Ahmedabad, India. Hire a skilled Laravel, PHP, and Full-Stack Developer for your web projects. 2+ years experience. Available for Laravel jobs and freelance work."
+    />
+    <meta
+      name="keywords"
+      content="Bhadresh Kotadiya, Laravel Developer, Hire Laravel Developer, Laravel Jobs, PHP Developer, Ahmedabad, India, Full-Stack Developer, Web Developer, Laravel Portfolio, Laravel Freelancer, Laravel Expert, Laravel Ahmedabad, Laravel Remote, Laravel API, Laravel E-commerce"
+    />
+    <meta name="author" content="Bhadresh Kotadiya" />
+    <meta
+      property="og:title"
+      content="Bhadresh Kotadiya - Laravel Developer Portfolio"
+    />
+    <meta
+      property="og:description"
+      content="Hire Bhadresh Kotadiya, an experienced Laravel Developer in Ahmedabad, India. Laravel jobs, freelance, and web development services."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bhadreshkotadiya.github.io/" />
+    <meta
+      property="og:image"
+      content="https://media.licdn.com/dms/image/v2/D5603AQGiH2s4RzOqxA/profile-displayphoto-shrink_200_200/B56ZPuOJWIG4AY-/0/1734868507099?e=1753920000&v=beta&t=j0i6qnwPfteejZi5Et811ubHA4_BVdcbhd7YEnXWPSM"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Bhadresh Kotadiya - Laravel Developer Portfolio"
+    />
+    <meta
+      name="twitter:description"
+      content="Hire Bhadresh Kotadiya, Laravel Developer in Ahmedabad, India. Laravel jobs, freelance, and web development services."
+    />
+    <meta
+      name="twitter:image"
+      content="https://media.licdn.com/dms/image/v2/D5603AQGiH2s4RzOqxA/profile-displayphoto-shrink_200_200/B56ZPuOJWIG4AY-/0/1734868507099?e=1753920000&v=beta&t=j0i6qnwPfteejZi5Et811ubHA4_BVdcbhd7YEnXWPSM"
+    />
+    <link rel="canonical" href="https://bhadreshkotadiya.github.io/" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container navbar">
+        <a href="#hero" class="logo">B<span>K</span></a>
+        <div class="menu-toggle" id="mobile-menu">
+          <i class="fas fa-bars"></i>
         </div>
-        <div class="about-text scroll-animate" data-anim-delay="0.4s">
-          <h3>Laravel Developer based in Ahmedabad, India</h3>
-          <p>
-            Hi, I'm Bhadresh Kotadiya, a dedicated and results-oriented
-            Laravel Developer with over two years of hands-on experience in
-            designing, developing, and maintaining dynamic web applications.
-            My journey in web development started with a fascination for how
-            websites work, which quickly grew into a passion for crafting
-            elegant and efficient solutions using the Laravel framework.
-          </p>
-          <p>
-            I thrive in collaborative environments and am committed to
-            continuous learning to stay updated with the latest industry
-            trends and technologies. My expertise lies in backend development
-            with PHP and Laravel, but I'm also proficient in front-end
-            technologies to deliver complete and user-friendly products.
-          </p>
-          <ul>
-            <li><strong>Name:</strong> Bhadresh Kotadiya</li>
-            <li><strong>Experience:</strong> 2+ Years</li>
-            <li>
-              <strong>Specialty:</strong> Laravel, PHP, Full-Stack Development
-            </li>
-            <li><strong>Email:</strong> Kotadiyabhadresh123@gmail.com</li>
-            <li><strong>Phone:</strong> (+91) 72028 20789</li>
-            <li><strong>Location:</strong> Ahmedabad, India</li>
-          </ul>
-          <a href="assets/Bhadresh -CV.pdf" class="btn" download>Download My CV</a>
+        <ul class="nav-links" id="nav-menu">
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+      <div class="container hero-content">
+        <h1>Hello, I'm <span>Bhadresh Kotadiya</span></h1>
+        <p class="subtitle">
+          A passionate Laravel Developer with 2+ years of experience, building
+          robust and scalable web applications.
+        </p>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn">Hire Me</a>
+          <a
+            href="assets/Bhadresh -CV.pdf"
+            target="_blank"
+            class="btn btn-secondary"
+            download
+            >Download CV</a
+          >
         </div>
       </div>
-    </div>
-  </section>
+      <a href="#about" class="scroll-down" aria-label="Scroll to About section">
+        Scroll Down
+        <i class="fas fa-chevron-down"></i>
+      </a>
+    </section>
 
-  <!-- Skills Section -->
-  <section id="skills">
-    <div class="container">
-      <h2 class="scroll-animate">My Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-category scroll-animate" data-anim-delay="0.1s">
-          <h3>Backend Development</h3>
-          <div class="skill-item">
-            <p>PHP <span>90%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 90%"></div>
-            </div>
+    <!-- About Section -->
+    <section id="about">
+      <div class="container">
+        <h2 class="scroll-animate">About Me</h2>
+        <div class="about-content">
+          <div class="about-image scroll-animate" data-anim-delay="0.2s">
+            <img
+              src="https://media.licdn.com/dms/image/v2/D5603AQGiH2s4RzOqxA/profile-displayphoto-shrink_200_200/B56ZPuOJWIG4AY-/0/1734868507099?e=1753920000&v=beta&t=j0i6qnwPfteejZi5Et811ubHA4_BVdcbhd7YEnXWPSM"
+              alt="Bhadresh Kotadiya"
+            />
           </div>
-          <div class="skill-item">
-            <p>Laravel Framework <span>95%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 95%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>MySQL <span>85%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 85%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>API Development (Postman, GraphQL) <span>80%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 80%"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category scroll-animate" data-anim-delay="0.2s">
-          <h3>Frontend Development</h3>
-          <div class="skill-item">
-            <p>HTML & CSS <span>90%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 90%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>JavaScript & jQuery <span>85%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 85%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>Alpine.js, Vue.js & Livewire <span>70%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 70%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>Bootstrap <span>85%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 85%"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="skill-category scroll-animate" data-anim-delay="0.3s">
-          <h3>Tools & Integrations</h3>
-          <div class="skill-item">
-            <p>Git (GitHub, GitLab, Bitbucket) <span>90%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 90%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>Payment Gateways (Stripe, Razor Pay) <span>85%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 85%"></div>
-            </div>
-          </div>
-          <div class="skill-item">
-            <p>Ajax <span>80%</span></p>
-            <div class="skill-bar">
-              <div class="skill-level" style="width: 80%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Experience Section -->
-  <section id="experience">
-    <div class="container">
-      <h2 class="scroll-animate">My Experience</h2>
-      <div class="experience-timeline">
-        <div class="experience-item left scroll-animate" data-anim-delay="0.2s">
-          <div class="experience-content">
-            <h3>Jr Laravel Developer</h3>
-            <span class="date">
-              May 2023 - Present<br />Dolphin Web Solutions, Ahmedabad
-            </span>
+          <div class="about-text scroll-animate" data-anim-delay="0.4s">
+            <h3>Laravel Developer based in Ahmedabad, India</h3>
             <p>
-              Working on Laravel projects, e-commerce sites, and API
-              integrations with Stripe & Razorpay.
+              Hi, I'm Bhadresh Kotadiya, a dedicated and results-oriented
+              Laravel Developer with over two years of hands-on experience in
+              designing, developing, and maintaining dynamic web applications.
+              My journey in web development started with a fascination for how
+              websites work, which quickly grew into a passion for crafting
+              elegant and efficient solutions using the Laravel framework.
             </p>
-          </div>
-        </div>
-        <div class="experience-item right scroll-animate" data-anim-delay="0.4s">
-          <div class="experience-content">
-            <h3>Trainee Laravel Developer</h3>
-            <span class="date">
-              Jan 2023 - May 2023<br />WebCodeGenie, Ahmedabad
-            </span>
             <p>
-              Learned Laravel basics, helped with projects, and gained
-              hands-on team experience.
+              I thrive in collaborative environments and am committed to
+              continuous learning to stay updated with the latest industry
+              trends and technologies. My expertise lies in backend development
+              with PHP and Laravel, but I'm also proficient in front-end
+              technologies to deliver complete and user-friendly products.
             </p>
+            <ul>
+              <li><strong>Name:</strong> Bhadresh Kotadiya</li>
+              <li><strong>Experience:</strong> 2+ Years</li>
+              <li>
+                <strong>Specialty:</strong> Laravel, PHP, Full-Stack Development
+              </li>
+              <li><strong>Email:</strong> Kotadiyabhadresh123@gmail.com</li>
+              <li>
+                <strong>Phone:</strong>
+                <a
+                  href="https://wa.me/917202820789"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat with me on WhatsApp"
+                >
+                  (+91) 72028 20789
+                </a>
+              </li>
+              <li><strong>Location:</strong> Ahmedabad, India</li>
+            </ul>
+            <a href="assets/Bhadresh -CV.pdf" class="btn" download
+              >Download My CV</a
+            >
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Portfolio Section -->
-  <section id="portfolio">
-    <div class="container">
-      <h2 class="scroll-animate">My Portfolio</h2>
-      <div class="portfolio-grid no-image">
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
-          <div class="portfolio-info">
-            <h3>Facts Scan</h3>
-            <p>
-              Food package scanning platform with APIs and admin panel. Users
-              get instant nutrition grades (A–E), ingredient info, and healthy
-              alternatives. Features guest access, user history, product
-              uploads for points, and a leaderboard. RESTful APIs power
-              seamless integration with a React Native app.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel</span>
-              <span>API</span>
-              <span>MySQL</span>
-              <span>Bootstrap</span>
+    <!-- Skills Section -->
+    <section id="skills">
+      <div class="container">
+        <h2 class="scroll-animate">My Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-category scroll-animate" data-anim-delay="0.1s">
+            <h3>Backend Development</h3>
+            <div class="skill-item">
+              <p>PHP <span>90%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>Laravel Framework <span>95%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>MySQL <span>85%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>API Development (Postman, GraphQL) <span>80%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-category scroll-animate" data-anim-delay="0.2s">
+            <h3>Frontend Development</h3>
+            <div class="skill-item">
+              <p>HTML & CSS <span>90%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>JavaScript & jQuery <span>85%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>Alpine.js, Vue.js & Livewire <span>70%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 70%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>Bootstrap <span>85%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-category scroll-animate" data-anim-delay="0.3s">
+            <h3>Tools & Integrations</h3>
+            <div class="skill-item">
+              <p>Git (GitHub, GitLab, Bitbucket) <span>90%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>Payment Gateways (Stripe, Razor Pay) <span>85%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <p>Ajax <span>80%</span></p>
+              <div class="skill-bar">
+                <div class="skill-level" style="width: 80%"></div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.2s">
-          <div class="portfolio-info">
-            <h3>Katalog</h3>
-            <p>
-              An advanced automotive parts platform where users can search for
-              car parts by vehicle registration number, view detailed product
-              information, and make purchases online. Includes a robust admin
-              panel (inspired by Magento) for full attribute management,
-              inventory control, and order processing.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel 12 (with Vue Startup Kit)</span>
-              <span>PostgreSQL</span>
-              <span>Tailwind CSS</span>
+    <!-- Experience Section -->
+    <section id="experience">
+      <div class="container">
+        <h2 class="scroll-animate">My Experience</h2>
+        <div class="experience-timeline">
+          <div
+            class="experience-item left scroll-animate"
+            data-anim-delay="0.2s"
+          >
+            <div class="experience-content">
+              <h3>Jr Laravel Developer</h3>
+              <span class="date">
+                May 2023 - Present<br />Dolphin Web Solutions, Ahmedabad
+              </span>
+              <p>
+                Working on Laravel projects, e-commerce sites, and API
+                integrations with Stripe & Razorpay.
+              </p>
             </div>
-            <div class="portfolio-links">
-              <a href="https://katalog-app.demoproject.info/login" target="_blank" class="btn btn-secondary btn-sm">
-                <i class="fas fa-eye"></i> Live Demo
+          </div>
+          <div
+            class="experience-item right scroll-animate"
+            data-anim-delay="0.4s"
+          >
+            <div class="experience-content">
+              <h3>Trainee Laravel Developer</h3>
+              <span class="date">
+                Jan 2023 - May 2023<br />WebCodeGenie, Ahmedabad
+              </span>
+              <p>
+                Learned Laravel basics, helped with projects, and gained
+                hands-on team experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+      <div class="container">
+        <h2 class="scroll-animate">My Portfolio</h2>
+        <div class="portfolio-grid no-image">
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
+            <div class="portfolio-info">
+              <h3>Facts Scan</h3>
+              <p>
+                Food package scanning platform with APIs and admin panel. Users
+                get instant nutrition grades (A–E), ingredient info, and healthy
+                alternatives. Features guest access, user history, product
+                uploads for points, and a leaderboard. RESTful APIs power
+                seamless integration with a React Native app.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span>
+                <span>API</span>
+                <span>MySQL</span>
+                <span>Bootstrap</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.2s">
+            <div class="portfolio-info">
+              <h3>Katalog</h3>
+              <p>
+                An advanced automotive parts platform where users can search for
+                car parts by vehicle registration number, view detailed product
+                information, and make purchases online. Includes a robust admin
+                panel (inspired by Magento) for full attribute management,
+                inventory control, and order processing.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel 12 (with Vue Startup Kit)</span>
+                <span>PostgreSQL</span>
+                <span>Tailwind CSS</span>
+              </div>
+              <div class="portfolio-links">
+                <a
+                  href="https://katalog-app.demoproject.info/login"
+                  target="_blank"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i class="fas fa-eye"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.3s">
+            <div class="portfolio-info">
+              <h3>Desi Deli</h3>
+              <p>
+                An e-commerce platform offering Indian products in the USA and
+                Canada, with IP-based pricing and user-friendly checkout.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span><span>Alpine.js</span><span>MySQL</span
+                ><span>API</span>
+              </div>
+              <div class="portfolio-links">
+                <a
+                  href="https://www.thedesideli.com"
+                  target="_blank"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i class="fas fa-eye"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
+            <div class="portfolio-info">
+              <h3>Trust Beauty</h3>
+              <p>
+                A web platform empowering beauty stores to manage services,
+                attract new clients, and collect customer reviews online.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span><span>PHP</span><span>Bootstrap</span
+                ><span>MySQL</span>
+              </div>
+              <div class="portfolio-links">
+                <a
+                  href="https://trustbeauty.co.uk/"
+                  target="_blank"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i class="fas fa-eye"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.2s">
+            <div class="portfolio-info">
+              <h3>Skilli</h3>
+              <p>
+                A sw coaching platform with features for student-coach
+                interactions, admin panel, and RESTful APIs.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span><span>REST API</span><span>MySQL</span
+                ><span>Bootstrap</span>
+              </div>
+              <div class="portfolio-links">
+                <a
+                  href="https://skillapp.demoproject.info/"
+                  target="_blank"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i class="fas fa-eye"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.3s">
+            <div class="portfolio-info">
+              <h3>Event Management</h3>
+              <p>
+                A system with APIs and QR code functionality for tracking
+                event-related activities.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span><span>API</span><span>MySQL</span
+                ><span>WhatsApp API</span>
+              </div>
+              <div class="portfolio-links">
+                <a
+                  href="https://easy-events.demoproject.info/admin/login"
+                  target="_blank"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i class="fas fa-eye"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
+            <div class="portfolio-info">
+              <h3>PDFMate</h3>
+              <p>
+                A document processing API platform with secure user
+                authentication, PDF conversion (via LibreOffice), and PDF
+                optimization using Ghostscript.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span><span>API</span><span>MySQL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blogs">
+      <div class="container">
+        <h2 class="scroll-animate">My Blog Articles</h2>
+        <div class="portfolio-grid no-image">
+          <!-- Blog 1 -->
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
+            <div class="portfolio-image">
+              <a
+                href="https://dolphinwebsolution.com/blog/how-to-send-emails-using-queue-jobs-in-laravel/"
+                target="_blank"
+              >
+                <img
+                  src="assets/blog_1.jpg"
+                  alt="How to Send Emails Using Queue Jobs in Laravel"
+                />
+              </a>
+            </div>
+            <div class="portfolio-info">
+              <h3>
+                <a
+                  href="https://dolphinwebsolution.com/blog/how-to-send-emails-using-queue-jobs-in-laravel/"
+                  target="_blank"
+                >
+                  How to Send Emails Using Queue Jobs in Laravel?
+                </a>
+              </h3>
+              <p>
+                Learn how to send emails asynchronously in Laravel using queue
+                jobs — a performance-enhancing approach for production
+                applications.
+              </p>
+              <div class="tech-stack space-y-2 mt-4">
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">Laravel</span>
+                  <span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">Queue</span>
+                  <span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">Email</span>
+                </div>
+                <div style="margin-top: 10px;">
+                  <a href="https://github.com/BhadreshKotadiya/mail-send-using-job"
+                     target="_blank"
+                     style="
+                       display: inline-flex;
+                       align-items: center;
+                       gap: 6px;
+                       padding: 8px 12px;
+                       background-color: #333;
+                       color: #fff;
+                       font-size: 14px;
+                       text-decoration: none;
+                       border-radius: 5px;
+                       width: 140px;
+                       justify-content: center;
+                       transition: background-color 0.3s ease;
+                     "
+                     onmouseover="this.style.backgroundColor='#444'"
+                     onmouseout="this.style.backgroundColor='#333'">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                         alt="GitHub"
+                         style="width: 20px; height: 20px;">
+                    View Repo
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blog 2 -->
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.2s">
+            <div class="portfolio-image">
+              <a
+                href="https://dolphinwebsolution.com/blog/build-a-to-do-app-in-laravel-step-by-step-livewire-example/"
+                target="_blank"
+              >
+                <img
+                  src="assets/blog_2.png"
+                  alt="Build a To-Do App in Laravel"
+                />
+              </a>
+            </div>
+            <div class="portfolio-info">
+              <h3>
+                <a
+                  href="https://dolphinwebsolution.com/blog/build-a-to-do-app-in-laravel-step-by-step-livewire-example/"
+                  target="_blank"
+                >
+                  Build a To-Do App in Laravel: Step-by-Step Livewire Example
+                </a>
+              </h3>
+              <p>
+                A practical guide to building a dynamic to-do app using Laravel
+                and Livewire. Perfect for developers exploring component-based
+                Laravel features.
+              </p>
+              <div class="tech-stack space-y-2 mt-4">
+                <div class="flex flex-wrap gap-2">
+                  <span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">Laravel</span>
+                  <span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">Livewire</span>
+                  <span class="bg-gray-700 text-white text-xs px-2 py-1 rounded">CRUD</span>
+                </div>
+                <div style="margin-top: 10px;">
+                  <a href="https://github.com/BhadreshKotadiya/laravel-livewire-todo-app"
+                     target="_blank"
+                     style="
+                       display: inline-flex;
+                       align-items: center;
+                       gap: 6px;
+                       padding: 8px 12px;
+                       background-color: #333;
+                       color: #fff;
+                       font-size: 14px;
+                       text-decoration: none;
+                       border-radius: 5px;
+                       width: 140px;
+                       justify-content: center;
+                       transition: background-color 0.3s ease;
+                     "
+                     onmouseover="this.style.backgroundColor='#444'"
+                     onmouseout="this.style.backgroundColor='#333'">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                         alt="GitHub"
+                         style="width: 20px; height: 20px;">
+                    View Repo
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blog 3 -->
+          <div class="portfolio-item scroll-animate" data-anim-delay="0.3s">
+            <div class="portfolio-image">
+              <a
+                href="https://dolphinwebsolution.com/blog/laravel-10-game-changing-practices/"
+                target="_blank"
+              >
+                <img
+                  src="assets/blog_3.webp"
+                  alt="Streamlining Laravel: 10 Game-Changing Practices"
+                />
+              </a>
+            </div>
+            <div class="portfolio-info">
+              <h3>
+                <a
+                  href="https://dolphinwebsolution.com/blog/laravel-10-game-changing-practices/"
+                  target="_blank"
+                >
+                  Streamlining Laravel: 10 Game-Changing Practices You Need to
+                  Know
+                </a>
+              </h3>
+              <p>
+                Discover 10 impactful tips and tricks to improve your Laravel
+                applications — from coding conventions to advanced Eloquent
+                usage.
+              </p>
+              <div class="tech-stack">
+                <span>Laravel</span>
+                <span>Best Practices</span>
+                <span>Optimization</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="container">
+        <h2 class="scroll-animate">Contact Me</h2>
+        <div class="contact-content">
+          <div class="contact-info scroll-animate" data-anim-delay="0.2s">
+            <h3>Let's Connect</h3>
+            <p>
+              Interested in working together or just want to say hello? <br />
+              Reach out via any of the methods below!
+            </p>
+            <div class="info-item">
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:Kotadiyabhadresh123@gmail.com"
+                >Kotadiyabhadresh123@gmail.com</a
+              >
+            </div>
+            <div class="info-item">
+              <i class="fas fa-phone"></i>
+              <a href="tel:+917202820789">Call: (+91) 72028 20789</a>
+            </div>
+            <div class="info-item">
+              <i class="fab fa-whatsapp"></i>
+              <a
+                href="https://wa.me/917202820789"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat with me on WhatsApp"
+              >
+                WhatsApp: 72028 20789
+              </a>
+            </div>
+            <div class="social-links">
+              <a
+                href="https://github.com/bhadreshkotadiya"
+                target="_blank"
+                aria-label="GitHub"
+              >
+                <i class="fab fa-github"></i>
+              </a>
+              <a
+                href="https://linkedin.com/in/kotadiyabhadresh"
+                target="_blank"
+                aria-label="LinkedIn"
+              >
+                <i class="fab fa-linkedin"></i>
               </a>
             </div>
           </div>
-        </div>
-
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.3s">
-          <div class="portfolio-info">
-            <h3>Desi Deli</h3>
-            <p>
-              An e-commerce platform offering Indian products in the USA and
-              Canada, with IP-based pricing and user-friendly checkout.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel</span><span>Alpine.js</span><span>MySQL</span><span>API</span>
-            </div>
-            <div class="portfolio-links">
-              <a href="https://www.thedesideli.com" target="_blank" class="btn btn-secondary btn-sm">
-                <i class="fas fa-eye"></i> Live Demo
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
-          <div class="portfolio-info">
-            <h3>Trust Beauty</h3>
-            <p>
-              A web platform empowering beauty stores to manage services,
-              attract new clients, and collect customer reviews online.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel</span><span>PHP</span><span>Bootstrap</span><span>MySQL</span>
-            </div>
-            <div class="portfolio-links">
-              <a href="https://trustbeauty.co.uk/" target="_blank" class="btn btn-secondary btn-sm">
-                <i class="fas fa-eye"></i> Live Demo
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.2s">
-          <div class="portfolio-info">
-            <h3>Skilli</h3>
-            <p>
-              A sw coaching platform with features for student-coach
-              interactions, admin panel, and RESTful APIs.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel</span><span>REST API</span><span>MySQL</span><span>Bootstrap</span>
-            </div>
-            <div class="portfolio-links">
-              <a href="https://skillapp.demoproject.info/" target="_blank" class="btn btn-secondary btn-sm">
-                <i class="fas fa-eye"></i> Live Demo
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.3s">
-          <div class="portfolio-info">
-            <h3>Event Management</h3>
-            <p>
-              A system with APIs and QR code functionality for tracking
-              event-related activities.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel</span><span>API</span><span>MySQL</span><span>WhatsApp API</span>
-            </div>
-            <div class="portfolio-links">
-              <a href="https://easy-events.demoproject.info/admin/login" target="_blank" class="btn btn-secondary btn-sm">
-                <i class="fas fa-eye"></i> Live Demo
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="portfolio-item scroll-animate" data-anim-delay="0.1s">
-          <div class="portfolio-info">
-            <h3>PDFMate</h3>
-            <p>
-              A document processing API platform with secure user
-              authentication, PDF conversion (via LibreOffice), and PDF
-              optimization using Ghostscript.
-            </p>
-            <div class="tech-stack">
-              <span>Laravel</span><span>API</span><span>MySQL</span>
-            </div>
+          <div class="contact-form scroll-animate" data-anim-delay="0.4s">
+            <form
+              id="contact-form"
+              action="https://formspree.io/f/xwpodbje"
+              method="POST"
+            >
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <textarea
+                  name="message"
+                  placeholder="Your Message"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn">Send Message</button>
+            </form>
+            <div
+              id="form-message"
+              style="margin-top: 15px; font-size: 0.9rem; text-align: center"
+            ></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact">
-    <div class="container">
-      <h2 class="scroll-animate">Contact Me</h2>
-      <div class="contact-content">
-        <div class="contact-info scroll-animate" data-anim-delay="0.2s">
-          <h3>Let's Connect</h3>
-          <p>
-            Interested in working together or just want to say hello? <br />
-            Reach out via any of the methods below!
-          </p>
-          <div class="info-item">
-            <i class="fas fa-envelope"></i>
-            <a href="mailto:Kotadiyabhadresh123@gmail.com">Kotadiyabhadresh123@gmail.com</a>
-          </div>
-          <div class="info-item">
-            <i class="fas fa-phone"></i>
-            <a href="tel:+917202820789">(+91) 72028 20789</a>
-          </div>
-          <div class="social-links">
-            <a href="https://github.com/bhadreshkotadiya" target="_blank" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="https://linkedin.com/in/kotadiyabhadresh" target="_blank" aria-label="LinkedIn">
-              <i class="fab fa-linkedin"></i>
-            </a>
-          </div>
-        </div>
-        <div class="contact-form scroll-animate" data-anim-delay="0.4s">
-          <form id="contact-form" action="https://formspree.io/f/xwpodbje" method="POST">
-            <div class="form-group">
-              <input type="text" name="name" placeholder="Your Name" required />
-            </div>
-            <div class="form-group">
-              <input type="email" name="email" placeholder="Your Email" required />
-            </div>
-            <div class="form-group">
-              <textarea name="message" placeholder="Your Message" required></textarea>
-            </div>
-            <button type="submit" class="btn">Send Message</button>
-          </form>
-          <div id="form-message" style="margin-top: 15px; font-size: 0.9rem; text-align: center"></div>
-        </div>
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>
+          © <span id="currentYear"></span> Bhadresh Kotadiya. All Rights
+          Reserved.
+        </p>
       </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>
-        © <span id="currentYear"></span> Bhadresh Kotadiya. All Rights
-        Reserved.
-      </p>
-    </div>
-  </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Simple mobile menu toggle
+        const mobileMenuButton = document.getElementById("mobile-menu");
+        const navMenu = document.getElementById("nav-menu");
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Simple mobile menu toggle
-      const mobileMenuButton = document.getElementById("mobile-menu");
-      const navMenu = document.getElementById("nav-menu");
-
-      mobileMenuButton.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-        const icon = mobileMenuButton.querySelector("i");
-        if (navMenu.classList.contains("active")) {
-          icon.classList.remove("fa-bars");
-          icon.classList.add("fa-times");
-        } else {
-          icon.classList.remove("fa-times");
-          icon.classList.add("fa-bars");
-        }
-      });
-
-      // Close mobile menu when a link is clicked
-      const navLinks = navMenu.querySelectorAll("a");
-      navLinks.forEach((link) => {
-        link.addEventListener("click", () => {
+        mobileMenuButton.addEventListener("click", () => {
+          navMenu.classList.toggle("active");
+          const icon = mobileMenuButton.querySelector("i");
           if (navMenu.classList.contains("active")) {
-            navMenu.classList.remove("active");
-            mobileMenuButton.querySelector("i").classList.remove("fa-times");
-            mobileMenuButton.querySelector("i").classList.add("fa-bars");
-          }
-        });
-      });
-
-      // Set current year in footer
-      document.getElementById("currentYear").textContent = new Date().getFullYear();
-
-      // Basic active link highlighting on scroll
-      const sections = document.querySelectorAll("section");
-      const navLi = document.querySelectorAll("header .nav-links li a");
-
-      window.addEventListener("scroll", () => {
-        let current = "";
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          if (pageYOffset >= sectionTop - sectionHeight / 2) {
-            current = section.getAttribute("id");
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-times");
+          } else {
+            icon.classList.remove("fa-times");
+            icon.classList.add("fa-bars");
           }
         });
 
-        navLi.forEach((a) => {
-          a.classList.remove("active");
-          if (a.getAttribute("href") === "#" + current) {
-            a.classList.add("active");
-          }
-        });
-        if (pageYOffset < sections[0].offsetTop + sections[0].clientHeight / 3) {
-          navLi.forEach(a => a.classList.remove('active'));
-          const homeLink = document.querySelector('header .nav-links li a[href="#hero"]');
-          if (homeLink) homeLink.classList.add('active');
-        }
-      });
-
-      // Contact form submission
-      const contactForm = document.getElementById("contact-form");
-      const formMessage = document.getElementById("form-message");
-
-      if (contactForm) {
-        contactForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const submitButton = contactForm.querySelector('button[type="submit"]');
-          submitButton.disabled = true;
-          submitButton.textContent = "Sending...";
-
-          try {
-            const formData = new FormData(contactForm);
-            const response = await fetch(contactForm.action, {
-              method: "POST",
-              body: formData,
-              headers: {
-                Accept: "application/json"
-              },
-            });
-
-            if (response.ok) {
-              formMessage.style.color = "var(--primary-color)";
-              formMessage.textContent = "Message sent successfully! Thank you for reaching out.";
-              contactForm.reset();
-            } else {
-              const errorData = await response.json();
-              formMessage.style.color = "#ff4d4d";
-              formMessage.textContent = errorData.error || "Something went wrong. Please try again.";
+        // Close mobile menu when a link is clicked
+        const navLinks = navMenu.querySelectorAll("a");
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            if (navMenu.classList.contains("active")) {
+              navMenu.classList.remove("active");
+              mobileMenuButton.querySelector("i").classList.remove("fa-times");
+              mobileMenuButton.querySelector("i").classList.add("fa-bars");
             }
-          } catch (error) {
-            formMessage.style.color = "#ff4d4d";
-            formMessage.textContent = "An error occurred. Please try again.";
-          } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = "Send Message";
-            setTimeout(() => {
-              formMessage.textContent = '';
-            }, 5000);
+          });
+        });
+
+        // Set current year in footer
+        document.getElementById("currentYear").textContent =
+          new Date().getFullYear();
+
+        // Basic active link highlighting on scroll
+        const sections = document.querySelectorAll("section");
+        const navLi = document.querySelectorAll("header .nav-links li a");
+
+        window.addEventListener("scroll", () => {
+          let current = "";
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= sectionTop - sectionHeight / 2) {
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLi.forEach((a) => {
+            a.classList.remove("active");
+            if (a.getAttribute("href") === "#" + current) {
+              a.classList.add("active");
+            }
+          });
+          if (
+            pageYOffset <
+            sections[0].offsetTop + sections[0].clientHeight / 3
+          ) {
+            navLi.forEach((a) => a.classList.remove("active"));
+            const homeLink = document.querySelector(
+              'header .nav-links li a[href="#hero"]'
+            );
+            if (homeLink) homeLink.classList.add("active");
           }
         });
-      }
 
-      // Hero content floating animation trigger
-      const heroContent = document.querySelector('.hero-content');
-      if (heroContent) {
-        const heroButtonsDelay = parseFloat(getComputedStyle(heroContent.querySelector('.hero-buttons')).animationDelay) || 0;
-        const heroButtonsDuration = parseFloat(getComputedStyle(heroContent.querySelector('.hero-buttons')).animationDuration) || 0;
-        const totalHeroAnimationTime = (heroButtonsDelay + heroButtonsDuration) * 1000; // in ms
+        // Contact form submission
+        const contactForm = document.getElementById("contact-form");
+        const formMessage = document.getElementById("form-message");
 
-        setTimeout(() => {
-          heroContent.classList.add('loaded-and-floating');
-        }, totalHeroAnimationTime + 200);
-      }
+        if (contactForm) {
+          contactForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const submitButton = contactForm.querySelector(
+              'button[type="submit"]'
+            );
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending...";
 
-
-      // Scroll reveal animations
-      const scrollAnimatedElements = document.querySelectorAll('.scroll-animate');
-
-      const scrollObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const delay = entry.target.dataset.animDelay;
-            if (delay) {
-              entry.target.style.transitionDelay = delay;
-            }
-            entry.target.classList.add('revealed');
-
-            if (entry.target.classList.contains('skill-category')) {
-              entry.target.querySelectorAll('.skill-level').forEach(sl => {
-                // Get the percentage from the <p><span>XX%</span></p> structure
-                const skillText = sl.parentElement.previousElementSibling.querySelector('span').textContent;
-                sl.style.width = skillText; // skillText should be like "90%"
+            try {
+              const formData = new FormData(contactForm);
+              const response = await fetch(contactForm.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                  Accept: "application/json",
+                },
               });
-            }
-             // Animate section title underline
-            if (entry.target.tagName === 'H2') {
-                entry.target.classList.add('revealed'); // This triggers h2::after animation
-            }
 
-            observer.unobserve(entry.target);
+              if (response.ok) {
+                formMessage.style.color = "var(--primary-color)";
+                formMessage.textContent =
+                  "Message sent successfully! Thank you for reaching out.";
+                contactForm.reset();
+              } else {
+                const errorData = await response.json();
+                formMessage.style.color = "#ff4d4d";
+                formMessage.textContent =
+                  errorData.error || "Something went wrong. Please try again.";
+              }
+            } catch (error) {
+              formMessage.style.color = "#ff4d4d";
+              formMessage.textContent = "An error occurred. Please try again.";
+            } finally {
+              submitButton.disabled = false;
+              submitButton.textContent = "Send Message";
+              setTimeout(() => {
+                formMessage.textContent = "";
+              }, 5000);
+            }
+          });
+        }
+
+        // Hero content floating animation trigger
+        const heroContent = document.querySelector(".hero-content");
+        if (heroContent) {
+          const heroButtonsDelay =
+            parseFloat(
+              getComputedStyle(heroContent.querySelector(".hero-buttons"))
+                .animationDelay
+            ) || 0;
+          const heroButtonsDuration =
+            parseFloat(
+              getComputedStyle(heroContent.querySelector(".hero-buttons"))
+                .animationDuration
+            ) || 0;
+          const totalHeroAnimationTime =
+            (heroButtonsDelay + heroButtonsDuration) * 1000; // in ms
+
+          setTimeout(() => {
+            heroContent.classList.add("loaded-and-floating");
+          }, totalHeroAnimationTime + 200);
+        }
+
+        // Scroll reveal animations
+        const scrollAnimatedElements =
+          document.querySelectorAll(".scroll-animate");
+
+        const scrollObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const delay = entry.target.dataset.animDelay;
+                if (delay) {
+                  entry.target.style.transitionDelay = delay;
+                }
+                entry.target.classList.add("revealed");
+
+                if (entry.target.classList.contains("skill-category")) {
+                  entry.target
+                    .querySelectorAll(".skill-level")
+                    .forEach((sl) => {
+                      // Get the percentage from the <p><span>XX%</span></p> structure
+                      const skillText =
+                        sl.parentElement.previousElementSibling.querySelector(
+                          "span"
+                        ).textContent;
+                      sl.style.width = skillText; // skillText should be like "90%"
+                    });
+                }
+                // Animate section title underline
+                if (entry.target.tagName === "H2") {
+                  entry.target.classList.add("revealed"); // This triggers h2::after animation
+                }
+
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px",
           }
+        );
+
+        scrollAnimatedElements.forEach((el) => {
+          scrollObserver.observe(el);
         });
-      }, {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
       });
-
-      scrollAnimatedElements.forEach(el => {
-        scrollObserver.observe(el);
-      });
-
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
