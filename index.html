@@ -93,30 +93,6 @@
     />
     <link rel="stylesheet" href="styles.css" />
 
-    <!-- DARK/LIGHT MODE TOGGLE -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const toggleBtn = document.createElement("button");
-        toggleBtn.innerHTML = "<i class='fas fa-adjust'></i>";
-        toggleBtn.setAttribute("aria-label", "Toggle dark/light mode");
-        toggleBtn.style.position = "fixed";
-        toggleBtn.style.bottom = "20px";
-        toggleBtn.style.right = "20px";
-        toggleBtn.style.backgroundColor = "var(--primary-color)";
-        toggleBtn.style.color = "white";
-        toggleBtn.style.border = "none";
-        toggleBtn.style.padding = "12px 16px";
-        toggleBtn.style.borderRadius = "50%";
-        toggleBtn.style.cursor = "pointer";
-        toggleBtn.style.zIndex = "9999";
-
-        document.body.appendChild(toggleBtn);
-
-        toggleBtn.addEventListener("click", () => {
-          document.body.classList.toggle("light-mode");
-        });
-      });
-    </script>
   </head>
 
   <body>
