@@ -1,3 +1,22 @@
+/* Skip to Main Content Link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  padding: 1em;
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.skip-link:focus {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20px;
+}
+
 /* Reset and Base Styles */
 :root {
   --primary-color: #14b8a6;
@@ -32,6 +51,13 @@
   scroll-behavior: smooth;
 }
 
+/* Global Image Responsiveness */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 html {
   transition: background-color 0.3s ease;
 }
@@ -46,6 +72,8 @@ body {
   /* Prevent horizontal scroll from animations */
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Animated Background Elements */
@@ -277,6 +305,8 @@ h6 {
   color: var(--text-color);
   margin-bottom: 1rem;
   font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -331,6 +361,7 @@ a:hover {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 15px;
+  box-sizing: border-box;
 }
 
 section {
@@ -339,7 +370,10 @@ section {
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background-color: var(--primary-color);
   color: #fff;
   padding: 12px 25px;
@@ -352,6 +386,9 @@ section {
   border: 2px solid transparent;
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+  min-height: 44px;
+  word-wrap: break-word;
 }
 
 .btn::before {
@@ -476,9 +513,11 @@ header {
 .logo-image {
   height: 50px;
   width: auto;
+  max-width: 100%;
   display: block;
   transition: transform 0.3s ease, filter 0.3s ease;
   filter: brightness(1) contrast(1);
+  object-fit: contain;
 }
 
 .logo:hover .logo-image {
@@ -604,6 +643,9 @@ header {
   margin-bottom: 0.5rem;
   color: var(--text-color);
   animation-delay: 0.2s;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
 }
 
 .hero-content h1 span.highlight {
@@ -612,11 +654,14 @@ header {
 
 .typing-text {
   display: inline;
+  white-space: normal;
 }
 
 .typing-name {
   display: inline;
   color: var(--primary-color);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .typing-cursor {
@@ -641,6 +686,8 @@ header {
   font-size: 1.25rem;
   color: var(--text-muted);
   margin-bottom: 1rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .subtitle {
@@ -649,6 +696,8 @@ header {
   margin-bottom: 2rem;
   line-height: 1.6;
   animation-delay: 0.5s;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .hero-stats {
@@ -726,19 +775,111 @@ header {
 .scroll-down {
   position: absolute;
   bottom: 50px;
+  left: 50%;
   transform: translateX(-50%);
   font-size: 0.9rem;
   color: var(--text-color);
   opacity: 0;
   animation: fadeInUp 0.8s ease 1.5s forwards;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
 }
 
-.scroll-down i {
+/* Modern Arrow SVG Component */
+.modern-arrow {
+  width: 24px;
+  height: 24px;
+  color: var(--primary-color);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: block;
-  font-size: 1.5rem;
-  margin-top: 5px;
-  animation: bounce 2s infinite;
+  flex-shrink: 0;
+}
+
+.modern-arrow .arrow-path {
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-arrow.arrow-down {
+  animation: arrowBounce 2s infinite;
+}
+
+.scroll-down:hover .modern-arrow {
+  animation: arrowBounceHover 1s infinite;
+  transform: translateY(3px);
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes arrowBounceHover {
+  0%, 100% {
+    transform: translateY(3px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+/* Floating Hire Me Button for Mobile */
+.floating-hire-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 50px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.4);
+  z-index: 999;
+  transition: all 0.3s ease;
+  animation: pulseFloat 3s ease-in-out infinite;
+}
+
+.floating-hire-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(20, 184, 166, 0.6);
+  color: #fff;
+  text-decoration: none;
+}
+
+.floating-hire-btn i {
+  font-size: 1.1rem;
+}
+
+@keyframes pulseFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-hire-btn {
+    display: flex;
+  }
 }
 
 @keyframes fadeInUp {
@@ -967,6 +1108,8 @@ header {
   font-size: 2.5rem;
   color: var(--primary-color);
   margin-bottom: 3rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .skills-grid {
@@ -1483,6 +1626,8 @@ header {
   font-size: 1.8rem;
   position: relative;
   display: inline-block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .contact-info h3::after {
@@ -1517,6 +1662,8 @@ header {
   background: rgba(20, 184, 166, 0.02);
   transition: all 0.3s ease;
   cursor: pointer;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .info-item:hover {
@@ -1537,6 +1684,7 @@ header {
   background: rgba(20, 184, 166, 0.1);
   border-radius: 50%;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .info-item:hover i {
@@ -1548,6 +1696,11 @@ header {
 .info-item a {
   color: var(--text-color);
   transition: color 0.3s ease;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  flex: 1;
+  min-width: 0;
 }
 
 .info-item a:hover {
@@ -1646,6 +1799,10 @@ header {
   z-index: 2;
   background: var(--bg-color);
   padding: 0 5px;
+  white-space: nowrap;
+  max-width: calc(100% - 30px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .form-group textarea + .floating-label {
@@ -1780,12 +1937,39 @@ header {
 }
 
 /* Responsive Design */
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+  
+  .hero-content {
+    max-width: 1000px;
+  }
+}
+
+/* Desktop (1024px - 1439px) */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .container {
+    max-width: 1100px;
+  }
+}
+
+/* Tablet Landscape (992px - 1023px) */
+@media (max-width: 1023px) and (min-width: 992px) {
+  .container {
+    width: 95%;
+  }
+}
+
 @media (max-width: 992px) {
   .nav-links {
     position: fixed;
     top: 65px;
     right: -100%;
-    width: 220px;
+    width: 280px;
+    max-width: 85vw;
     height: calc(100vh - 65px);
     background: var(--secondary-color);
     flex-direction: column;
@@ -1794,6 +1978,8 @@ header {
     transition: right 0.3s ease-in-out;
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
     z-index: 999;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .nav-links.active {
@@ -1811,6 +1997,14 @@ header {
     top: 20px;
     right: 60px;
     z-index: 1001;
+  }
+  
+  .navbar {
+    padding: 0 10px;
+  }
+  
+  .logo {
+    flex-shrink: 0;
   }
 
   .menu-toggle {
@@ -1914,6 +2108,8 @@ header {
 
   .portfolio-item img {
     height: 180px;
+    width: 100%;
+    object-fit: cover;
   }
 
   .hero-stats {
@@ -1930,7 +2126,8 @@ header {
 
   .container {
     width: 95%;
-    padding: 0 10px;
+    padding: 0 15px;
+    box-sizing: border-box;
   }
 
   /* Hero specific for 768px */
@@ -1943,7 +2140,15 @@ header {
   }
 
   .hero-content h1 {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
+    line-height: 1.3;
+    padding: 0 15px;
+  }
+  
+  .typing-name {
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
   }
 
   .hero-content .subtitle {
@@ -1968,6 +2173,8 @@ header {
 
   .portfolio-item img {
     height: 150px;
+    width: 100%;
+    object-fit: cover;
   }
 
   .portfolio-info {
@@ -2000,6 +2207,14 @@ header {
 
   .hero-content h1 {
     font-size: 2.2rem;
+    line-height: 1.3;
+    padding: 0 10px;
+  }
+  
+  .typing-name {
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
   }
 
   .hero-content .subtitle {
@@ -2014,6 +2229,8 @@ header {
     /* Allow side-by-side if space allows */
     padding: 10px 18px;
     font-size: 0.9rem;
+    white-space: nowrap;
+    min-width: fit-content;
   }
 
   .hero-stats {
@@ -2029,14 +2246,26 @@ header {
   }
 
   .scroll-down {
-    bottom: 50px;
-    /* Significantly more space from screen bottom */
-    font-size: 0.85rem;
+    bottom: 30px;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 0.8rem;
+    padding: 10px 16px;
+    width: auto;
+    max-width: 90%;
+  }
+  
+  .scroll-down .modern-arrow {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .scroll-text {
+    font-size: 0.75rem;
   }
 }
 
 @media (max-width: 375px) {
-
   /* Targeting iPhone SE, Galaxy Fold (narrow state) and similar */
   #hero {
     padding-top: 60px;
@@ -2044,8 +2273,22 @@ header {
   }
 
   .hero-content h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     /* More compact */
+    line-height: 1.3;
+    padding: 0 10px;
+  }
+  
+  .typing-text {
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  .typing-name {
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+    line-height: 1.2;
   }
 
   .hero-content .subtitle {
@@ -2072,6 +2315,73 @@ header {
     /* But not too wide */
     padding: 12px 15px;
     /* Adjust padding for better tap targets */
+    white-space: nowrap;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 0 12px;
+  }
+  
+  .navbar .theme-toggle {
+    right: 50px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  .logo-image {
+    height: 40px;
+  }
+  
+  .contact-info {
+    padding: 20px 15px;
+  }
+  
+  .info-item {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+  }
+  
+  .info-item a {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    font-size: 0.85rem;
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  
+  .info-item i {
+    flex-shrink: 0;
+    margin-right: 10px;
+  }
+  
+  .scroll-down {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 25px;
+    padding: 8px 14px;
+    font-size: 0.75rem;
+  }
+  
+  .scroll-text {
+    font-size: 0.7rem;
+  }
+  
+  .scroll-down .modern-arrow {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .portfolio-info h3 {
+    font-size: 1.1rem;
+    word-wrap: break-word;
+  }
+  
+  .experience-content h3 {
+    font-size: 1.2rem;
+    word-wrap: break-word;
   }
 }
 
@@ -2087,4 +2397,148 @@ footer {
 footer p {
   margin-bottom: 0;
   font-size: 0.9rem;
+}
+
+/* Scroll to Top Button */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 998;
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.4);
+  padding: 0;
+}
+
+.scroll-to-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top-btn:hover {
+  background: var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.6);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(-3px) scale(0.95);
+}
+
+.scroll-to-top-btn .modern-arrow {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+
+.scroll-to-top-btn .modern-arrow .arrow-path {
+  stroke: #fff;
+}
+
+/* Responsive Scroll to Top Button */
+@media (max-width: 768px) {
+  .scroll-to-top-btn {
+    bottom: 80px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .scroll-to-top-btn .modern-arrow {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-to-top-btn {
+    bottom: 70px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .scroll-to-top-btn .modern-arrow {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Additional Responsive Breakpoints */
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+  
+  .hero-content {
+    max-width: 1000px;
+  }
+}
+
+/* Desktop (1024px - 1439px) */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .container {
+    max-width: 1100px;
+  }
+}
+
+/* Mobile Landscape (414px - 479px) */
+@media (max-width: 479px) and (min-width: 414px) {
+  .hero-content h1 {
+    font-size: 2.4rem;
+    line-height: 1.3;
+  }
+  
+  .container {
+    width: 95%;
+    padding: 0 20px;
+  }
+}
+
+/* Small Mobile (320px - 374px) */
+@media (max-width: 374px) {
+  .hero-content h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+  
+  .hero-content .subtitle {
+    font-size: 0.95rem;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  .floating-hire-btn {
+    bottom: 15px;
+    right: 15px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .floating-hire-btn span {
+    display: none;
+  }
+  
+  .floating-hire-btn i {
+    font-size: 1.2rem;
+  }
 }
